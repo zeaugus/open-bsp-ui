@@ -15,6 +15,8 @@ import { useResizable } from "@/hooks/useResizable";
 import { useCurrentAgents } from "@/queries/useAgents";
 import StatsCenter from "@/components/stats/StatsCenter";
 import AvisoNotificacoes from "@/acr/AvisoNotificacoes"; // acr
+import FaixaDeEstado from "@/acr/FaixaDeEstado"; // acr
+import AvisoAoResponder from "@/acr/AvisoAoResponder"; // acr
 
 export const Route = createFileRoute("/_auth")({
   component: AppLayout,
@@ -117,7 +119,9 @@ function AppLayout() {
             {isHoveringFiles && <FilePicker setHovering={setIsHoveringFiles} />}
             <FilePreviewer />
             <ChatHeader />
+            <FaixaDeEstado /> {/* acr */}
             <Chat />
+            <AvisoAoResponder /> {/* acr */}
             <ChatFooter />
           </>
         ) : (

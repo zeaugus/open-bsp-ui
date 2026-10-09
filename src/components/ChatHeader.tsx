@@ -4,7 +4,6 @@ import useBoundStore from "@/stores/useBoundStore";
 import { useTranslation } from "@/hooks/useTranslation";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
-import EstadoDaConversa from "@/acr/EstadoDaConversa"; // acr
 import { useContactAddress } from "@/queries/useContactsAddresses";
 import {
   contactName,
@@ -99,9 +98,6 @@ export default function Header() {
             `@${igExtra.username}`}
         </div>
       </div>
-
-      {/* acr: etiqueta de estado (IA / aguardando / com atendente) e devolver */}
-      <EstadoDaConversa conversaId={activeConvId} />
 
       {/* Options button - Hidden, does nothing yet. */}
       <div className="options flex justify-end w-full hidden">

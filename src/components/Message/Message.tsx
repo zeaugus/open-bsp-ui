@@ -25,6 +25,7 @@ import { useContactAddress } from "@/queries/useContactsAddresses";
 import { formatPhoneNumber } from "@/utils/FormatUtils";
 import { AVATAR_BG_COLORS, AVATAR_TEXT_COLORS } from "@/utils/colors";
 import type { Json } from "@/supabase/db_types";
+import RotuloIA, { useEhIA } from "@/acr/RotuloIA"; // acr
 
 const md = new Remarkable({
   breaks: true,
@@ -351,6 +352,7 @@ export function OutMessage({
   children,
   avatar,
   internal,
+  ia, // acr
 }: PropsWithChildren<UIMessage>) {
   return (
     <div
@@ -367,7 +369,8 @@ export function OutMessage({
           " text-foreground" +
           (first ? " rounded-tr-none" : "") +
           (text ? textMsgMaxWidth : "") +
-          (internal ? " bg-incoming-chat-bubble" : " bg-outgoing-chat-bubble")
+          (internal ? " bg-incoming-chat-bubble" : " bg-outgoing-chat-bubble") +
+          (ia ? " acr-ia" : "") // acr: balão da IA
         }
       >
         {first && (
@@ -386,7 +389,11 @@ export function OutMessage({
             </svg>
           </>
         )}
-        {!!avatar && first && <Avatar {...avatar} display="name" />}
+        {ia ? (
+          <RotuloIA /> // acr
+        ) : (
+          !!avatar && first && <Avatar {...avatar} display="name" />
+        )}
         {children}
       </div>
     </div>
@@ -401,6 +408,7 @@ type UIMessage = {
   convName?: string;
   avatar?: { agentId: string; color: string };
   internal?: boolean;
+  ia?: boolean; // acr: escrita por um agente de IA
   // Whether the conversation can hold more than one party on the peer's side
   // (see isMultiParty) — what decides if an incoming message is attributed.
   multiParty?: boolean;
@@ -417,6 +425,7 @@ export default function Message(props: UIMessage & { message: MessageRow }) {
     isTeamChat(state.chat.conversations.get(props.message.conversation_id)),
   );
   const direction = messageDirection(props.message, ownAgentId, teamChat);
+  const ia = useEhIA(props.message.agent_id); // acr
 
   // Attribution in contact space. Where the peer's side can hold more than one
   // party, the incoming row carries its actual sender in sender_address while
@@ -625,6 +634,7 @@ export default function Message(props: UIMessage & { message: MessageRow }) {
             ...props,
             text,
             internal: direction === "internal",
+            ia: ia && direction === "outgoing", // acr
             fixedWidth,
           }}
         >

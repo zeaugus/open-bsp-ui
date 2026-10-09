@@ -21,3 +21,11 @@
   --sidebar-primary: var(--acr-celeste);
   --chat-out: #2a3a73;
 }
+
+/* Balão das mensagens da IA: só troca a cor do balão de saída (o rabo herda). */
+.acr-ia {
+  --chat-out: #fbf0c4;
+}
+.dark .acr-ia {
+  --chat-out: #4b4320;
+}
