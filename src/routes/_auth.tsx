@@ -14,6 +14,7 @@ import { Bot, Building2, MessageSquarePlus, Settings } from "lucide-react";
 import { useResizable } from "@/hooks/useResizable";
 import { useCurrentAgents } from "@/queries/useAgents";
 import StatsCenter from "@/components/stats/StatsCenter";
+import AvisoNotificacoes from "@/acr/AvisoNotificacoes"; // acr
 
 export const Route = createFileRoute("/_auth")({
   component: AppLayout,
@@ -75,6 +76,8 @@ function AppLayout() {
           : undefined
       }
     >
+      {/* acr: aviso para ativar push neste aparelho */}
+      <AvisoNotificacoes />
       {/* Menu - Fixed width */}
       <div className={showCenterPanel ? "hidden md:flex" : "flex"}>
         <Menu />

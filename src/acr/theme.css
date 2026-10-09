@@ -1,0 +1,23 @@
+/* acr: tema UASS-PJC. Só troca cores de destaque por variável; o layout é o do
+   upstream. Navy #1F2B5D, amarelo #F5C518, laranja #E36008, celeste #9DD0EB. */
+:root {
+  --acr-navy: #1f2b5d;
+  --acr-navy-deep: #141a3b;
+  --acr-amarelo: #f5c518;
+  --acr-laranja: #e36008;
+  --acr-celeste: #9dd0eb;
+
+  --primary: var(--acr-navy);
+  --primary-foreground: #fff;
+  --ring: var(--acr-navy);
+  --sidebar-primary: var(--acr-navy);
+  --chat-out: #dbe7f6;
+}
+
+.dark {
+  --primary: var(--acr-celeste);
+  --primary-foreground: var(--acr-navy-deep);
+  --ring: var(--acr-celeste);
+  --sidebar-primary: var(--acr-celeste);
+  --chat-out: #2a3a73;
+}

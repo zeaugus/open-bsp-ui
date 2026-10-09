@@ -1,23 +1,29 @@
 {
-  "short_name": "OpenBSP",
-  "name": "OpenBSP - WhatsApp Web and Instagram interface",
-  "description": "Open-source WhatsApp Web and Instagram interface. Self-hostable, multi-tenant, and AI-agent ready.",
+  "short_name": "UASS Atende",
+  "name": "UASS-PJC Atendimento",
+  "description": "Caixa de atendimento da equipe UASS-PJC no WhatsApp.",
   "icons": [
     {
-      "src": "/logo-192x192.png",
+      "src": "/uass-icon-192.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any"
     },
     {
-      "src": "/logo-512x512.png",
+      "src": "/uass-icon-512.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any"
+    },
+    {
+      "src": "/uass-icon-maskable-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
     }
   ],
   "start_url": "/",
-  "background_color": "#faf8f1",
+  "background_color": "#1F2B5D",
   "display": "standalone",
-  "theme_color": "#cb6441"
+  "theme_color": "#1F2B5D"
 }

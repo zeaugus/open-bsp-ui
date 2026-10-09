@@ -22,3 +22,5 @@ mise.toml
 
 .tanstack
 dist/
+# acr: resíduo do supabase link
+supabase/

@@ -1,6 +1,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./global.css";
+import "./acr/theme.css"; // acr: tema UASS-PJC
+import { registrarServiceWorker } from "./acr/push"; // acr: push da equipe
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { TickProvider } from "./contexts/useTick";
@@ -53,6 +55,9 @@ updateTheme(darkModeMediaQuery);
 
 // Listen for changes
 darkModeMediaQuery.addEventListener("change", updateTheme);
+
+// acr: service worker para o push
+registrarServiceWorker();
 
 // Preload translations before rendering
 function detectLanguage(): Language {

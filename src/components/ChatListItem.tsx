@@ -31,6 +31,7 @@ import { useCurrentAgent, useCurrentAgents } from "@/queries/useAgents";
 import { useContactAddress } from "@/queries/useContactsAddresses";
 import { formatPhoneNumber, nameInitials } from "@/utils/FormatUtils";
 import { useNavigate } from "@tanstack/react-router";
+import SeloAguardando from "@/acr/SeloAguardando"; // acr
 
 function mediaPreview(t: (content: string) => ReactNode, message?: MessageRow) {
   let mediaIcon = null;
@@ -436,6 +437,8 @@ export default function ChatListItem({ itemId }: { itemId: string }) {
               </div>
 
               <div className="flex flex-row items-center">
+                {/* acr: selo das conversas que esperam a equipe */}
+                <SeloAguardando conversaId={itemId} />
                 {/* Pin - For now just conversations can be fixed */}
                 {isPinned && (
                   <svg className="h-[18px] w-[12px] ml-[6px] text-muted-foreground">
