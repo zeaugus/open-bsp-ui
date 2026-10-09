@@ -18,7 +18,10 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const { redirect, email: showEmail } = Route.useSearch();
+  const { redirect } = Route.useSearch();
+  // acr: a caixa da UASS entra só por e-mail (Google e GitHub não estão habilitados no Supabase),
+  // e o app instalado abre em "/" sem o ?email=1.
+  const showEmail = true;
 
   const { translate: t } = useTranslation();
 
@@ -56,7 +59,7 @@ function Login() {
       <div className="flex flex-col gap-3 w-[250px]">
         <button
           type="button"
-          className="primary bg-blue-500 hover:bg-blue-400 text-white w-full border-none"
+          className="hidden primary bg-blue-500 hover:bg-blue-400 text-white w-full border-none" // acr: escondido
           onClick={() => handleLogInWithOauth("google")}
         >
           <GoogleOutlined /> {t("Continuar con Google")}
@@ -64,7 +67,7 @@ function Login() {
 
         <button
           type="button"
-          className="primary bg-gray-900 hover:bg-gray-800 text-white w-full border-none"
+          className="hidden primary bg-gray-900 hover:bg-gray-800 text-white w-full border-none" // acr: escondido
           onClick={() => handleLogInWithOauth("github")}
         >
           <GithubOutlined /> {t("Continuar con GitHub")}
