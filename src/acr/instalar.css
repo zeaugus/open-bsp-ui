@@ -1,0 +1,84 @@
+/* acr: cores e destaque do guia "virar app". Paleta UASS de theme.css. */
+.acr-guia {
+  --g-fundo: #eef3fa;
+  --g-cartao: #ffffff;
+  --g-texto: var(--acr-navy-deep);
+  --g-suave: #56607f;
+  --g-borda: #d9e1ee;
+  --g-tela: #ffffff;
+  --g-tela-2: #edf1f7;
+  --g-traco: #d5dce8;
+  --g-numero: var(--acr-navy);
+  --g-numero-texto: #ffffff;
+  --g-azul-chrome: #0b57d0;
+  --g-sobre-azul: #ffffff;
+  --g-azul-ios: #007aff;
+  background: var(--g-fundo);
+  color: var(--g-texto);
+}
+
+.dark .acr-guia {
+  --g-fundo: #0e1330;
+  --g-cartao: #171e45;
+  --g-texto: #eef1ff;
+  --g-suave: #aeb6d8;
+  --g-borda: #2a3466;
+  --g-tela: #1f2855;
+  --g-tela-2: #2b356a;
+  --g-traco: #3a4580;
+  --g-numero: var(--acr-celeste);
+  --g-numero-texto: var(--acr-navy-deep);
+  --g-azul-chrome: #a8c7fa;
+  --g-sobre-azul: #062e6f;
+  --g-azul-ios: #0a84ff;
+}
+
+/* O que tocar no desenho: anel amarelo fixo e um pulso por fora.
+   A forma (rounded-*) vem da classe Tailwind do elemento; o pulso herda. */
+.acr-alvo {
+  position: relative;
+  box-shadow: 0 0 0 3px var(--acr-amarelo);
+}
+.acr-alvo::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  border: 3px solid var(--acr-amarelo);
+  animation: acr-pulso 1.6s ease-out infinite;
+  pointer-events: none;
+}
+/* Linha de menu: larga, pulsa menos para não invadir as vizinhas. */
+.acr-alvo-linha::after {
+  animation-name: acr-pulso-linha;
+}
+
+@keyframes acr-pulso {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  70%,
+  100% {
+    transform: scale(1.22);
+    opacity: 0;
+  }
+}
+@keyframes acr-pulso-linha {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  70%,
+  100% {
+    transform: scale(1.04, 1.25);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .acr-alvo::after {
+    animation: none;
+    opacity: 0;
+  }
+}

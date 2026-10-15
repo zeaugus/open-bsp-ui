@@ -26,7 +26,29 @@ não aparece.
 - `AvisoAoResponder.tsx`: linha fina acima do campo de mensagem, em `ia` e `aguardando_humano`.
 - `util.ts` (`estadoDe`, `formatarTempo`, `useAgora`, relógio de 30 s) e `motivos.ts` (cópia do
   `ROTULOS` de `acr-atendimento/lib/avisos/params.ts`; se lá mudar, mudar aqui).
-- `AvisoNotificacoes.tsx`, `theme.css` (variáveis de cor UASS).
+- `AvisoNotificacoes.tsx`, `theme.css` (variáveis de cor UASS). No iPhone fora do app, o aviso
+  "adicione à tela de início" é um link para `/instalar`.
+- Guia "virar app" (rota `/instalar`, aberta sem login, e sozinho na 1ª visita pelo celular):
+  - `GuiaInstalar.tsx`: cabeçalho, abas Android e iPhone (abre a do sistema detectado), 6 passos
+    numerados em `<ol>`, botão "Instalar o app" quando o Chrome dispara `beforeinstallprompt`,
+    "Já instalei" e "Agora não" fixos embaixo (os dois gravam o aviso visto). iPhone fora do
+    Safari (Chrome, Instagram, Facebook...) ganha um aviso amarelo no passo 1.
+  - `GuiaPrimeiraVez.tsx`: o mesmo guia em tela cheia por cima de tudo, decidido uma vez ao
+    carregar. Aparece se: celular (UA iPhone/Android, ou toque com tela até 767 px) e fora do app
+    instalado (`instaladoNaTela()` de `push.ts`) e `localStorage["acr-guia-instalar"]` vazio. Fica
+    fora de `/instalar`, `/onboard*` e `/oauth*`. Sem acesso ao storage, conta como visto e não
+    abre; fechar funciona mesmo se a gravação falhar. Abre antes do login, para a pessoa instalar
+    primeiro e entrar uma vez só, já no app (no iPhone o app instalado não herda a sessão do
+    Safari).
+  - `instalar.ts`: detecção (`ehCelular`, `iosForaDoSafari`), aviso visto, copiar endereço e o
+    `beforeinstallprompt` guardado desde a carga do módulo (`usePodeInstalar`, `pedirInstalacao`).
+  - `MockupsInstalar.tsx`: desenhos simplificados (barra e menu do Chrome, janela de instalar,
+    barra e folha de compartilhar do Safari, confirmação, tela de início com `/uass-icon-192.png`,
+    aviso de notificações). Todos `aria-hidden`.
+  - `instalar.css`: cores do guia (claro e escuro) e o anel amarelo com pulso (`.acr-alvo`), que
+    para com `prefers-reduced-motion`.
+  - O último passo ensina a tocar em "Ativar notificações" (o aviso de `AvisoNotificacoes.tsx`);
+    o guia não ativa nada sozinho.
 - Fora daqui: `public/sw.js`, `public/manifest.json`, `public/uass-*.png` (ícones do brasão
   sobre navy, gerados de `assets/logos/uass-crest-tight.png` do design system).
 
@@ -44,6 +66,12 @@ não aparece.
   entre `ChatHeader` e `Chat`; :124 `<AvisoAoResponder />` entre `Chat` e `ChatFooter`.
   (`ChatHeader.tsx` não é mais tocado.)
 - `.env.example`: `VITE_VAPID_PUBLIC_KEY=`.
+- `src/routes/instalar.tsx` (novo): rota `/instalar`, mostra `GuiaInstalar`; sair vai para `/`.
+  `src/routeTree.gen.ts` regenerado pelo plugin do router.
+- `src/routes/__root.tsx`:9 import; :20-21 `<GuiaPrimeiraVez />` depois do `<Outlet />`; :48
+  `/instalar` fora do redirecionamento para o login.
+- `src/routes/_auth/settings/index.tsx`:6 ícone `Smartphone`; :78-87 item "Instalar o app no
+  celular" que abre `/instalar`.
 
 ## Push
 
@@ -62,4 +90,7 @@ tela de início (o aviso explica). Textos da camada são fixos em português (n�
 3. Notificações: o aviso aparece após o login; tocar pede permissão e grava a inscrição
    (`acr.atendentes.push`). Enviar um push `{titulo, corpo, url:"/conversations#<id>"}` pelo
    cron/`web-push` e clicar nele. No iPhone, instalar na tela de início primeiro.
-4. Gate: `npm run check` e `npm run build` (gera `dist/sw.js` e `dist/manifest.json`).
+4. Guia: abrir o endereço no celular, fora do app: o guia cobre o login. "Agora não" fecha e não
+   volta (apagar `acr-guia-instalar` do localStorage para rever). Sempre em `/instalar` e em
+   Preferências, "Instalar o app no celular".
+5. Gate: `npm run check` e `npm run build` (gera `dist/sw.js` e `dist/manifest.json`).

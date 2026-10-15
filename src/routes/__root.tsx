@@ -6,6 +6,7 @@ import useBoundStore from "@/stores/useBoundStore";
 import { redirect } from "@tanstack/react-router";
 import { supabase } from "@/supabase/client";
 import { useSetActiveOrg } from "@/hooks/useSetActiveOrg";
+import GuiaPrimeiraVez from "@/acr/GuiaPrimeiraVez"; // acr
 
 function RootLayout() {
   useAuth();
@@ -13,7 +14,13 @@ function RootLayout() {
   useRealtimeSubscription();
   useInitialDataFetch();
 
-  return <Outlet />;
+  return (
+    <>
+      <Outlet />
+      {/* acr: guia "virar app" na 1ª visita pelo celular */}
+      <GuiaPrimeiraVez />
+    </>
+  );
 }
 
 export const Route = createRootRoute({
@@ -37,7 +44,8 @@ export const Route = createRootRoute({
     if (
       !user &&
       !location.pathname.startsWith("/login") &&
-      !location.pathname.startsWith("/onboard")
+      !location.pathname.startsWith("/onboard") &&
+      !location.pathname.startsWith("/instalar") // acr: guia sem login
     ) {
       throw redirect({
         to: "/login",

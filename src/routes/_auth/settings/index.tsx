@@ -3,7 +3,7 @@ import SectionHeader from "@/components/SectionHeader";
 import SectionItem from "@/components/SectionItem";
 import { useTranslation } from "@/hooks/useTranslation";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Building2, Users, Webhook, Key } from "lucide-react";
+import { Building2, Users, Webhook, Key, Smartphone } from "lucide-react"; // acr: Smartphone
 
 export const Route = createFileRoute("/_auth/settings/")({
   component: SettingsIndex,
@@ -74,6 +74,16 @@ function SettingsIndex() {
                 hash: (prevHash) => prevHash!,
               })
             }
+          />
+          {/* acr: reabre o guia "virar app" */}
+          <SectionItem
+            title="Instalar o app no celular"
+            aside={
+              <div className="p-[8px]">
+                <Smartphone className="w-[24px] h-[24px] text-muted-foreground" />
+              </div>
+            }
+            onClick={() => navigate({ to: "/instalar" })}
           />
         </div>
       </SectionBody>

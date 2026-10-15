@@ -1,5 +1,6 @@
 // acr: aviso discreto "Ativar notificações deste aparelho", depois do login.
 import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import useBoundStore from "@/stores/useBoundStore";
 import {
   ativarNotificacoes,
@@ -39,7 +40,9 @@ export default function AvisoNotificacoes() {
     <div className="pointer-events-none fixed inset-x-0 bottom-[calc(env(safe-area-inset-bottom)+12px)] z-[70] flex justify-center px-[16px]">
       <div className="pointer-events-auto rounded-full bg-[var(--acr-navy)] px-[16px] py-[8px] text-[13px] text-white shadow-lg">
         {modo === "ios" ? (
-          "Para receber avisos no iPhone, adicione à tela de início"
+          <Link to="/instalar">
+            Para receber avisos no iPhone, adicione à tela de início
+          </Link>
         ) : (
           <button
             disabled={ocupado}
