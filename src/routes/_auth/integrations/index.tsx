@@ -5,7 +5,6 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { FileText } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { InstagramOutlined, WhatsAppOutlined } from "@ant-design/icons";
-import ServiceIcon from "@/components/ServiceIcon";
 
 export const Route = createFileRoute("/_auth/integrations/")({
   component: IntegrationsIndex,
@@ -37,21 +36,7 @@ function IntegrationsIndex() {
               })
             }
           />
-          <SectionItem
-            aside={
-              <div className="p-[8px]">
-                <ServiceIcon service="whatsapp-web" size={24} />
-              </div>
-            }
-            title="WhatsApp Web"
-            description={t("Conexión no oficial vía WhatsApp Web")}
-            onClick={() =>
-              navigate({
-                to: "/integrations/whatsapp-web",
-                hash: (prevHash) => prevHash!,
-              })
-            }
-          />
+          {/* acr: sem WhatsApp Web no menu; o número da UASS só entra pela API oficial. */}
           <SectionItem
             aside={
               <div className="p-[8px]">
