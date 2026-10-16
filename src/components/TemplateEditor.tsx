@@ -12,6 +12,9 @@ import SelectField from "./SelectField";
 import { useNavigate } from "@tanstack/react-router";
 import { useCreateTemplate, useUpdateTemplate } from "@/queries/useTemplates";
 
+// acr: a Meta não aceita "pt" (só pt_BR e pt_PT): o idioma do app vira o código dela.
+const IDIOMA_DA_META: Record<string, string> = { pt: "pt_BR" };
+
 interface TemplateFormData {
   name: string;
   language: string;
@@ -37,6 +40,7 @@ export default function TemplateEditor({
   const createMutation = useCreateTemplate();
   const updateMutation = useUpdateTemplate();
   const isPending = createMutation.isPending || updateMutation.isPending;
+  const envioErro = (existingTemplate ? updateMutation : createMutation).error; // acr
 
   const existingHeader = existingTemplate?.components.find(
     (c) => c.type === "HEADER",
@@ -51,12 +55,16 @@ export default function TemplateEditor({
     control,
     watch,
     setValue,
-    formState: { isDirty, isValid, errors },
+    formState: { isDirty, errors, submitCount }, // acr: sem isValid
   } = useForm<TemplateFormData>({
     mode: "onTouched",
     defaultValues: {
       name: existingTemplate?.name || "",
-      language: existingTemplate?.language || currentLanguage || "es",
+      language:
+        existingTemplate?.language ||
+        IDIOMA_DA_META[currentLanguage] || // acr
+        currentLanguage ||
+        "es",
       category: existingTemplate?.category || "MARKETING",
       header: existingHeader?.text || "",
       headerVariable: existingHeader?.example?.header_text?.[0] || "",
@@ -286,7 +294,7 @@ export default function TemplateEditor({
             options={[
               { value: "es", label: "Español" },
               { value: "en", label: "English" },
-              { value: "pt", label: "Português" },
+              { value: "pt_BR", label: "Português" }, // acr: era "pt"
             ]}
           />
 
@@ -481,10 +489,15 @@ export default function TemplateEditor({
       </SectionBody>
 
       <SectionFooter>
+        {/* acr: o botão não fica mais apagado sem motivo; o clique mostra o que falta */}
+        {submitCount > 0 && Object.keys(errors).length > 0 && (
+          <FieldError error="Corrija os campos em vermelho acima." />
+        )}
+        <FieldError error={envioErro?.message} />
         <Button
           type="submit"
           form="template-form"
-          invalid={!isValid || !isDirty}
+          invalid={!!existingTemplate && !isDirty} // acr: novo modelo nunca fica travado
           loading={isPending}
           className="primary"
         >

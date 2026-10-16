@@ -4,6 +4,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import TemplateEditor from "@/components/TemplateEditor";
 import { useTemplates, useDeleteTemplate } from "@/queries/useTemplates";
 import { LoaderCircle } from "lucide-react";
+import MensagemDeErro from "@/acr/MensagemDeErro"; // acr
 
 export const Route = createFileRoute(
   "/_auth/integrations/whatsapp/$orgAddressId/templates/$templateId",
@@ -16,7 +17,7 @@ function EditTemplate() {
   const navigate = useNavigate();
   const { orgAddressId, templateId } = Route.useParams();
 
-  const { data: templates, isLoading } = useTemplates(orgAddressId);
+  const { data: templates, isLoading, error } = useTemplates(orgAddressId);
   const deleteTemplate = useDeleteTemplate();
 
   if (isLoading) {
@@ -26,6 +27,9 @@ function EditTemplate() {
       </div>
     );
   }
+
+  // acr: falha ao listar não é "modelo não encontrado"
+  if (error) return <MensagemDeErro mensagem={error.message} />;
 
   const template = templates?.find((t) => t.id === templateId);
 

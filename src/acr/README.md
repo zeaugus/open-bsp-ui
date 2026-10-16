@@ -49,6 +49,9 @@ não aparece.
     para com `prefers-reduced-motion`.
   - O último passo ensina a tocar em "Ativar notificações" (o aviso de `AvisoNotificacoes.tsx`);
     o guia não ativa nada sozinho.
+- `erroDeFuncao.ts` (`textoDoErro`): lê o corpo de um `FunctionsHttpError` e devolve uma frase em
+  português com o detalhe da Meta (`cause.error`); 401/403 viram "sem permissão". `MensagemDeErro.tsx`:
+  aviso de erro com "Tentar de novo" opcional. Usados nas telas de modelos (WhatsApp).
 - Fora daqui: `public/sw.js`, `public/manifest.json`, `public/uass-*.png` (ícones do brasão
   sobre navy, gerados de `assets/logos/uass-crest-tight.png` do design system).
 
@@ -72,6 +75,17 @@ não aparece.
   `/instalar` fora do redirecionamento para o login.
 - `src/routes/_auth/settings/index.tsx`:6 ícone `Smartphone`; :78-87 item "Instalar o app no
   celular" que abre `/instalar`.
+- `src/queries/useTemplates.ts`:5-24 `invokeTemplates` (envolve `invokeFunction` e converte o erro em
+  `Error` legível; os 5 pontos de chamada usam ele); :46 `retry: false` na lista.
+- `src/routes/_auth/integrations/whatsapp/$orgAddressId/templates/index.tsx`:8 import; :21-28
+  `isError/error/isFetching/refetch`; :50-64 spinner no "Tentar de novo" e `<MensagemDeErro />`
+  (antes a lista falha ficava vazia sem aviso).
+- `.../templates/$templateId.tsx`:7 import; :31-32 erro de carga não vira "Modelo não encontrado".
+- `src/components/TemplateEditor.tsx`:15-16 `IDIOMA_DA_META` (`pt` vira `pt_BR`, que é o código da Meta);
+  :43 `envioErro`; :58 sem `isValid`; :63-67 idioma padrão; :297 opção `pt_BR`; :492-500 rodapé: aviso
+  "Corrija os campos em vermelho" após clique inválido, erro do envio e botão sem `!isValid` (só trava
+  edição sem mudança). Antes, o botão ficava apagado sem dizer o motivo (erro só aparece em campo
+  tocado) e o erro do POST era engolido.
 
 ## Push
 

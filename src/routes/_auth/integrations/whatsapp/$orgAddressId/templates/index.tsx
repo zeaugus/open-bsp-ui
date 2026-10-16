@@ -5,6 +5,7 @@ import SectionItem from "@/components/SectionItem";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Plus, LayoutTemplate, LoaderCircle } from "lucide-react";
 import { useTemplates } from "@/queries/useTemplates";
+import MensagemDeErro from "@/acr/MensagemDeErro"; // acr
 
 export const Route = createFileRoute(
   "/_auth/integrations/whatsapp/$orgAddressId/templates/",
@@ -17,7 +18,14 @@ function TemplatesIndex() {
   const navigate = useNavigate();
   const { orgAddressId } = Route.useParams();
 
-  const { data: templates, isLoading } = useTemplates(orgAddressId);
+  const {
+    data: templates,
+    isLoading,
+    isError, // acr
+    error, // acr
+    isFetching, // acr
+    refetch, // acr
+  } = useTemplates(orgAddressId);
 
   return (
     <>
@@ -39,10 +47,19 @@ function TemplatesIndex() {
           }
         />
 
-        {isLoading && (
+        {/* acr: spinner também no "Tentar de novo" */}
+        {(isLoading || (isError && isFetching)) && (
           <div className="flex justify-center p-4">
             <LoaderCircle className="w-6 h-6 animate-spin text-muted-foreground" />
           </div>
+        )}
+
+        {/* acr: erro visível em vez de lista vazia */}
+        {isError && !isFetching && (
+          <MensagemDeErro
+            mensagem={error.message}
+            onTentarDeNovo={() => void refetch()}
+          />
         )}
 
         {templates?.map((template) => (
